@@ -3,6 +3,7 @@ import 'package:f8n/locales.dart';
 import 'package:f8n/externals.dart';
 import 'package:fex/core/AssetsDart.dart';
 import 'package:fex/presentation/directory_view.dart';
+import 'package:fex/presentation/directory_view1.dart';
 import 'package:flutter/material.dart';
 import '../integration_test/utils/ViewTestApp.dart';
 
@@ -35,13 +36,19 @@ Future<void> main() async {
       ),
   );*/
 
-  final view = SingleChildScrollView(
+  /*final view = SingleChildScrollView(
     padding: const EdgeInsets.symmetric(
       horizontal: 16.0,
     ),
-    child: DirectoryView(intl, tempDir),
+    child: DirectoryView1(intl, tempDir),
+  );*/
+
+  final view =
+    ListView(
+      children: [
+        DirectoryView1(intl, tempDir),
+      ],
   );
 
   runApp(ViewTestApp(view));
 }
-

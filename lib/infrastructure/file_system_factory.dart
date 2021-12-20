@@ -1,6 +1,6 @@
-import 'dart:io' show Platform;
+/*import 'dart:io' show Platform;
 import 'package:fex/domain/file_system.dart';
-/*
+
 class FileSystemFactory {
   static FileSystem fromCurrentPlatform() {
     if(Platform.isLinux) {
@@ -10,5 +10,4 @@ class FileSystemFactory {
         '${Platform.operatingSystem}');
   }
 }
-
 */

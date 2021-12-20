@@ -13,7 +13,12 @@ class ViewTestApp extends StatelessWidget
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: view
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('ViewTestApp'),
+        ),
+        body: view,
+      )
     );
   }
 }
