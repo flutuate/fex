@@ -3,24 +3,28 @@ import 'package:flutter/material.dart';
 import 'package:f8n/locales.dart';
 
 import 'widgets/StateEx.dart';
+import 'widgets/StaticSpacer.dart';
 
 class DirectoryView1 extends StatefulWidget {
   final IIntl _intl;
   final Directory _dir;
+  final int _spacing;
 
-  DirectoryView1(this._intl, this._dir);
+  DirectoryView1(this._intl, this._dir, [this._spacing = 0]);
 
   @override
-  State<StatefulWidget> createState() => DirectoryView1State(_intl, _dir);
+  State<StatefulWidget> createState() =>
+      DirectoryView1State(_intl, _dir, _spacing);
 }
 
 class DirectoryView1State<V extends DirectoryView1> extends StateEx<V> {
   final Directory _dir;
   final List<DirectoryView1> _subdirs = <DirectoryView1>[];
+  final int _spacing;
 
   bool _expandedView = false;
 
-  DirectoryView1State(IIntl intl, this._dir) : super(intl);
+  DirectoryView1State(IIntl intl, this._dir, this._spacing) : super(intl);
 
   @override
   Widget build(BuildContext context) {
@@ -35,14 +39,23 @@ class DirectoryView1State<V extends DirectoryView1> extends StateEx<V> {
   }
 
   Widget _buildTile(BuildContext context) {
+    final children = <Widget>[];
+    var spacing = _spacing;
+    while (spacing > 0) {
+      spacing--;
+      children.add(StaticSpacer());
+    }
+
+    children.addAll([
+      _buildExpandButton(context),
+      _buildIcon(context),
+      _buildName(context),
+    ]);
+
     return InkWell(
-      onTap: () => _onClickExpandButton(),
+      onTap: () => _onChangeExpansion(),
       child: Row(
-        children: [
-          _buildExpandButton(context),
-          _buildIcon(context),
-          _buildName(context),
-        ],
+        children: children,
       ),
     );
   }
@@ -72,14 +85,24 @@ class DirectoryView1State<V extends DirectoryView1> extends StateEx<V> {
   }
 
   Widget _buildSubdirs(BuildContext context) {
+    if( _expandedView ) {
+      return Column(
+        children: _subdirs,
+      );
+    }
     return Column(
-      children: _subdirs,
+      children: <DirectoryView1>[]
     );
   }
 
-  void _onClickExpandButton() {
+  void _onChangeExpansion() {
     _expandedView = !_expandedView;
-    loadSubdirectories();
+    if( _expandedView ) {
+      loadSubdirectories();
+    }
+    else {
+      setState(() {});
+    }
   }
 
   void loadSubdirectories() {
@@ -93,7 +116,7 @@ class DirectoryView1State<V extends DirectoryView1> extends StateEx<V> {
     final list = Directory(_dir.path).listSync(recursive: false);
     for (var dir in list) {
       if (dir is Directory) {
-        _subdirs.add(DirectoryView1(intl, _dir));
+        _subdirs.add(DirectoryView1(intl, dir, _spacing + 1));
       }
     }
     busy = false;
