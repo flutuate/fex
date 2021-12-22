@@ -1,9 +1,11 @@
 import 'dart:io';
+import 'package:fex/presentation/widgets/EmptyContainer.dart';
 import 'package:flutter/material.dart';
 import 'package:f8n/locales.dart';
 
 import 'widgets/StateEx.dart';
 import 'widgets/StaticSpacer.dart';
+import 'widgets/images.dart';
 
 class DirectoryView1 extends StatefulWidget {
   final IIntl _intl;
@@ -27,10 +29,16 @@ class DirectoryView1State<V extends DirectoryView1> extends StateEx<V> {
   DirectoryView1State(IIntl intl, this._dir, this._spacing) : super(intl);
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _buildTile(context),
         _buildSubdirs(context),
@@ -49,31 +57,36 @@ class DirectoryView1State<V extends DirectoryView1> extends StateEx<V> {
     children.addAll([
       _buildExpandButton(context),
       _buildIcon(context),
+      SizedBox(width: 4, child:EmptyContainer()),
       _buildName(context),
     ]);
 
+    final row = Row(
+      children: children,
+    );
+
+    final child = Container(height: 28,child: row,);
+
     return InkWell(
       onTap: () => _onChangeExpansion(),
-      child: Row(
-        children: children,
-      ),
+      child: child,
     );
   }
 
   Widget _buildExpandButton(BuildContext context) {
-    final icon = _expandedView ? Icons.expand_more : Icons.chevron_right;
+    final icon = _expandedView ? Icons.expand_more_rounded : Icons.chevron_right_rounded;
     return Container(
       padding: EdgeInsets.all(
         0.0,
       ),
       child: busy
           ? CircularProgressIndicator(key: Key('loadingSubdirs'))
-          : Icon(icon),
+          : Icon(icon, size: 14,),
     );
   }
 
   Widget _buildIcon(BuildContext context) {
-    return Icon(Icons.storage);
+    return Images.folder;
   }
 
   Widget _buildName(BuildContext context) {

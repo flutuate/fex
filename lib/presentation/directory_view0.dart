@@ -4,23 +4,23 @@ import 'package:f8n/locales.dart';
 
 import 'widgets/StateEx.dart';
 
-class DirectoryView extends StatefulWidget {
+class DirectoryView0 extends StatefulWidget {
   final IIntl _intl;
   final Directory _dir;
 
-  DirectoryView(this._intl, this._dir);
+  DirectoryView0(this._intl, this._dir);
 
   @override
-  State<StatefulWidget> createState() => DirectoryViewState(_intl, _dir);
+  State<StatefulWidget> createState() => DirectoryView0State(_intl, _dir);
 }
 
-class DirectoryViewState<V extends DirectoryView> extends StateEx<V> {
+class DirectoryView0State<V extends DirectoryView0> extends StateEx<V> {
   final Directory _dir;
-  final List<DirectoryView> _subdirs = <DirectoryView>[];
+  final List<DirectoryView0> _subdirs = <DirectoryView0>[];
 
   bool _expandedView = false;
 
-  DirectoryViewState(IIntl intl, this._dir) : super(intl);
+  DirectoryView0State(IIntl intl, this._dir) : super(intl);
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +95,7 @@ class DirectoryViewState<V extends DirectoryView> extends StateEx<V> {
     final list = Directory(_dir.path).listSync(recursive: false);
     for (var dir in list) {
       if (dir is Directory) {
-        _subdirs.add(DirectoryView(intl, _dir));
+        _subdirs.add(DirectoryView0(intl, _dir));
       }
     }
     busy = false;

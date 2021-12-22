@@ -1,8 +1,6 @@
-import 'dart:async';
-
 import 'dart:io';
 import 'package:fex/core/AssetsDart.dart';
-import 'package:fex/presentation/directory_view.dart';
+import 'package:fex/presentation/directory_view0.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
@@ -25,7 +23,7 @@ Future main() async {
       'Then the expand button and icon is showed \n',
       (WidgetTester tester) async {
     final rootDir = Directory('\\');
-    final view = DirectoryView(intl, rootDir);
+    final view = DirectoryView0(intl, rootDir);
 
     await tester.pumpWidget(ViewTestApp(view));
     await tester.pumpAndSettle();
@@ -73,7 +71,7 @@ Future main() async {
           (WidgetTester tester) async
       {
         final rootDir = Directory('/');
-        final view = DirectoryView(intl, rootDir);
+        final view = DirectoryView0(intl, rootDir);
 
         await tester.pumpWidget(ViewTestApp(view));
         await tester.pumpAndSettle();
@@ -100,7 +98,7 @@ Future main() async {
         tempDir.createTempSync('blo');
         tempDir.createTempSync('blu');
 
-        final view = DirectoryView(intl, tempDir);
+        final view = DirectoryView0(intl, tempDir);
 
         await tester.pumpWidget(ViewTestApp(view));
         await tester.pumpAndSettle();
@@ -123,7 +121,7 @@ Future main() async {
       });
 }
 
-class DirectoryViewWithSleep extends DirectoryView {
+class DirectoryViewWithSleep extends DirectoryView0 {
   final IIntl _intl;
   final Directory _dir;
 
@@ -135,7 +133,7 @@ class DirectoryViewWithSleep extends DirectoryView {
 }
 
 class DirectoryViewStateWithSleep
-    extends DirectoryViewState<DirectoryViewWithSleep> {
+    extends DirectoryView0State<DirectoryViewWithSleep> {
   DirectoryViewStateWithSleep(IIntl intl, Directory dir) : super(intl, dir);
 
   @override
