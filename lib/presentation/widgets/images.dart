@@ -10,4 +10,10 @@ class Images {
     width: 18,
     height: 18,
   );
+
+  static const Image documents = Image(
+    image: AssetImage('assets/icons/documents.ico'),
+    width: 18,
+    height: 18,
+  );
 }

@@ -47,9 +47,9 @@ class ViewTestApp extends StatelessWidget
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
-        appBar: AppBar(
+        /*appBar: AppBar(
           title: Text('ViewTestApp'),
-        ),
+        ),*/
         body: body,
       )
     );

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:fex/domain/ifile_system.dart';
 import 'package:flutter/material.dart';
 import 'package:f8n/locales.dart';
 import 'package:collection/collection.dart';
@@ -10,14 +11,15 @@ import 'widgets/images.dart';
 
 class DirectoryView3 extends StatefulWidget {
   final IIntl _intl;
+  final IFileSystem _fs;
   final Directory directory;
   final int _spacing;
 
-  DirectoryView3(this._intl, this.directory, [this._spacing = 0]);
+  DirectoryView3(this._intl, this._fs, this.directory, [this._spacing = 0]);
 
   @override
   State<StatefulWidget> createState() =>
-      DirectoryView3State(_intl, directory, name, _spacing);
+      DirectoryView3State(_intl, _fs, directory, name, _spacing);
 
   String get name {
     var dirname = '/';
@@ -29,6 +31,7 @@ class DirectoryView3 extends StatefulWidget {
 }
 
 class DirectoryView3State<V extends DirectoryView3> extends StateEx<V> {
+  final IFileSystem _fs;
   final Directory _dir;
   final String _name;
   final int _spacing;
@@ -36,7 +39,7 @@ class DirectoryView3State<V extends DirectoryView3> extends StateEx<V> {
   final List<DirectoryView3> _subdirs = <DirectoryView3>[];
   bool _expandedView = false;
 
-  DirectoryView3State(IIntl intl, this._dir, this._name, this._spacing) : super(intl);
+  DirectoryView3State(IIntl intl, this._fs, this._dir, this._name, this._spacing) : super(intl);
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +124,7 @@ class DirectoryView3State<V extends DirectoryView3> extends StateEx<V> {
     );
 
     return InkWell(
-      onTap: () => _onChangeExpansion(),
+      onDoubleTap: () => _onChangeExpansion(),
       child: child,
     );
   }
@@ -167,7 +170,12 @@ class DirectoryView3State<V extends DirectoryView3> extends StateEx<V> {
   }
 
   Widget _buildIcon(BuildContext context) {
-    return Images.folder;
+    if( _fs.isDocumentsFolder(_dir) ) {
+      return Images.documents;
+    }
+    else {
+      return Images.folder;
+    }
   }
 
   Widget _buildName(BuildContext context) {
@@ -195,7 +203,6 @@ class DirectoryView3State<V extends DirectoryView3> extends StateEx<V> {
   /// TODO To use cache.
   Future<List<DirectoryView3>> _loadSubdirs() async {
     if (_subdirs.isEmpty) {
-      print('$_name: _loadSubdirs');
       var stream;
       try {
         // FileSystemException: Directory listing failed, path = '/lost+found/' (OS Error: Permission denied, errno = 13)
@@ -205,7 +212,7 @@ class DirectoryView3State<V extends DirectoryView3> extends StateEx<V> {
       }
       await for (var entity in stream) {
         if (entity is Directory) {
-          _subdirs.add(DirectoryView3(intl, entity, _spacing + 1));
+          _subdirs.add(DirectoryView3(intl, _fs, entity, _spacing + 1));
         }
       }
       _subdirs.sort((a, b) => compareAsciiLowerCase(a.name, b.name));

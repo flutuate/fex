@@ -39,6 +39,7 @@ dependencies:
     git: https://github.com/flutuate/f8n.git
   meta: any
   path: ^1.8.0
+  path_provider: ^2.0.8
 
 dev_dependencies:
   integration_test:

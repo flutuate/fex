@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:fex/core/AssetsDart.dart';
+import 'package:fex/infrastructure/file_system.dart';
 import 'package:fex/presentation/directory_view3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -7,6 +8,7 @@ import 'package:integration_test/integration_test.dart';
 import 'package:f8n/locales.dart';
 import 'package:f8n/externals.dart';
 
+import '../extensions/widget_tester_ex.dart';
 import '../utils/ViewTestApp.dart';
 
 Future main() async {
@@ -16,6 +18,8 @@ Future main() async {
   final assets = AssetsDart();
   final intl = IntlFromAssets(assets, locale);
   await intl.load();
+  final fs = FileSystem();
+  await fs.initialize();
 
   testWidgets(
       'Given a directory view \n'
@@ -24,7 +28,7 @@ Future main() async {
       (WidgetTester tester) async {
     final dirname = '/';
     final rootDir = Directory(dirname);
-    final view = DirectoryView3(intl, rootDir);
+    final view = DirectoryView3(intl, fs, rootDir);
 
     await tester.pumpWidget(ViewTestApp(view));
     await tester.pumpAndSettle();
@@ -45,14 +49,14 @@ Future main() async {
       'When tap to expand it \n'
       'Then expansion icon is changed \n', (WidgetTester tester) async {
     final rootDir = Directory('/');
-    final view = DirectoryView3(intl, rootDir);
+    final view = DirectoryView3(intl, fs, rootDir);
 
     await tester.pumpWidget(ViewTestApp(view));
     await tester.pumpAndSettle();
     await tester.pump();
 
     var finder = find.byIcon(Icons.chevron_right_rounded, skipOffstage: false);
-    await tester.tap(finder);
+    await tester.doubleTap(finder);
     await tester.pumpAndSettle();
 
     finder = find.byIcon(Icons.expand_more_rounded, skipOffstage: false);
@@ -71,14 +75,14 @@ Future main() async {
     tempDir.createTempSync(blo);
     tempDir.createTempSync(blu);
 
-    final view = DirectoryView3(intl, tempDir);
+    final view = DirectoryView3(intl, fs, tempDir);
 
     await tester.pumpWidget(ViewTestApp(view));
     await tester.pumpAndSettle();
     await tester.pump();
 
     var finder = find.byIcon(Icons.chevron_right_rounded, skipOffstage: false);
-    await tester.tap(finder);
+    await tester.doubleTap(finder);
     await tester.pumpAndSettle();
 
     finder = find.textContaining(bla, skipOffstage: false);
@@ -105,14 +109,14 @@ Future main() async {
     tempDir.createTempSync(blo);
     tempDir.createTempSync(abc);
 
-    final view = DirectoryView3(intl, tempDir);
+    final view = DirectoryView3(intl, fs, tempDir);
 
     await tester.pumpWidget(ViewTestApp(view));
     await tester.pumpAndSettle();
     await tester.pump();
 
     var finder = find.byIcon(Icons.chevron_right_rounded, skipOffstage: false);
-    await tester.tap(finder);
+    await tester.doubleTap(finder);
     await tester.pumpAndSettle();
 
     finder = find.byKey(Key(tempDir.path));
@@ -127,24 +131,3 @@ Future main() async {
   });
 }
 
-/*class DirectoryView3WithSleep extends DirectoryView3 {
-  final IIntl _intl;
-
-  DirectoryView3WithSleep(this._intl, Directory directory) : super(_intl, directory);
-
-  @override
-  State<StatefulWidget> createState() =>
-      DirectoryView3StateWithSleep(_intl, directory, name);
-}
-
-class DirectoryView3StateWithSleep
-    extends DirectoryView3State<DirectoryView3WithSleep> {
-  DirectoryView3StateWithSleep(IIntl intl, Directory dir, String name, [int spacing = 0])
-      : super(intl, dir, name, spacing);
-
-  @override
-  void loadSubdirectories() {
-    busy = true;
-    // Do nothing
-  }
-}*/
