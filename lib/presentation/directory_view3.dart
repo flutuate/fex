@@ -173,6 +173,9 @@ class DirectoryView3State<V extends DirectoryView3> extends StateEx<V> {
     if( _fs.isDocumentsFolder(_dir) ) {
       return Images.documents;
     }
+    else if( _fs.isDownloadsFolder(_dir) ) {
+      return Images.downloads;
+    }
     else {
       return Images.folder;
     }

@@ -22,6 +22,9 @@ Future main() async {
   final fs = FileSystem();
   await fs.initialize();
 
+  final homePath = Platform.environment['HOME'] ?? '/home';
+  final homeDir = Directory(homePath);
+
   testWidgets(
       'Given a directory \n'
       'When it is the Documents \n'
@@ -30,8 +33,6 @@ Future main() async {
     final docsDir = await getApplicationDocumentsDirectory();
 
     if( docsDir.existsSync() ) {
-      final homePath = Platform.environment['HOME'] ?? '/home';
-      final homeDir = Directory(homePath);
       final view = DirectoryView3(intl, fs, homeDir);
 
       await tester.pumpWidget(ViewTestApp(view));
@@ -52,7 +53,39 @@ Future main() async {
       expect( finder, findsOneWidget );
 
       finder = find.widgetWithImage(DirectoryView3, AssetImage('assets/icons/documents.ico'));
+      expect( finder, findsWidgets );
+    }
+  });
+
+  testWidgets(
+      'Given a directory \n'
+          'When it is the Documents \n'
+          'Then show with documents icon \n', (WidgetTester tester) async {
+
+    final downloadsDir = await getDownloadsDirectory();
+
+    if( downloadsDir!.existsSync() ) {
+      final view = DirectoryView3(intl, fs, homeDir);
+
+      await tester.pumpWidget(ViewTestApp(view));
+      await tester.pumpAndSettle();
+      await tester.pump();
+
+      var finder = find.byIcon(Icons.chevron_right_rounded, skipOffstage: false);
+      await tester.doubleTap(finder);
+      await tester.pumpAndSettle();
+
+      final gesture = await tester.startGesture(Offset(0, 300)); //Position of the scrollview
+      await gesture.moveBy(Offset(0, -300)); //How much to scroll by
+      await tester.pump();
+
+      final downloadsPath = downloadsDir.path;
+
+      finder = find.byKey(Key(downloadsPath), skipOffstage: false);
       expect( finder, findsOneWidget );
+
+      finder = find.widgetWithImage(DirectoryView3, AssetImage('assets/icons/downloads.ico'));
+      expect( finder, findsWidgets );
     }
   });
 }

@@ -6,13 +6,19 @@ class Images {
   Images._();
 
   static const Image folder = Image(
-    image: AssetImage('assets/icons/folder.ico'),
+    image: AssetImage('assets/icons/folder.png'),
     width: 18,
     height: 18,
   );
 
   static const Image documents = Image(
-    image: AssetImage('assets/icons/documents.ico'),
+    image: AssetImage('assets/icons/documents.png'),
+    width: 18,
+    height: 18,
+  );
+
+  static const Image downloads = Image(
+    image: AssetImage('assets/icons/downloads.png'),
     width: 18,
     height: 18,
   );
