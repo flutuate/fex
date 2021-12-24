@@ -170,11 +170,23 @@ class DirectoryView3State<V extends DirectoryView3> extends StateEx<V> {
   }
 
   Widget _buildIcon(BuildContext context) {
-    if( _fs.isDocumentsFolder(_dir) ) {
+    if( _fs.isDesktopDir(_dir) ) {
+      return Images.desktop;
+    }
+    else if( _fs.isDocumentsDir(_dir) ) {
       return Images.documents;
     }
-    else if( _fs.isDownloadsFolder(_dir) ) {
+    else if( _fs.isDownloadsDir(_dir) ) {
       return Images.downloads;
+    }
+    else if( _fs.isMusicDir(_dir) ) {
+      return Images.music;
+    }
+    else if( _fs.isVideosDir(_dir) ) {
+      return Images.videos;
+    }
+    else if( _fs.isPicturesDir(_dir) ) {
+      return Images.pictures;
     }
     else {
       return Images.folder;

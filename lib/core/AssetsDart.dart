@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:f8n/services.dart';
 
@@ -54,6 +55,11 @@ class AssetsDart implements IAssets {
   @override
   Future loadTextFromUri(Uri uri) async {
     final content = await File.fromUri(uri).readAsString();
+    return content;
+  }
+
+  Future<Uint8List> load(String path) async {
+    var content = await File(path).readAsBytes();
     return content;
   }
 }
