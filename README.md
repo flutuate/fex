@@ -1,6 +1,6 @@
 # fex
 
-Linux File Explorer
+Linux File Explorer implemented with Flutter.
 
 ## Getting Started
 
