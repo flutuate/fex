@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ViewTestApp extends StatelessWidget
-{
+class ViewTestApp extends StatelessWidget {
   final Widget child;
 
   ViewTestApp(this.child);
@@ -25,34 +24,35 @@ class ViewTestApp extends StatelessWidget
     );
     */
 
+    /*
     final body = SingleChildScrollView(
       padding: const EdgeInsets.symmetric(
-        horizontal: 16.0,
+        horizontal: 8.0,
+        vertical: 8.0,
+      ),
+      child: child,
+    );
+    */
+
+    final body = SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      padding: const EdgeInsets.symmetric(
+        horizontal: 8.0,
+        vertical: 8.0,
       ),
       child: child,
     );
 
-    /*
-    final view =
-    ListView(
-      children: [
-        DirectoryView3(intl, tempDir),
-      ],
-    );
-    */
-
     return MaterialApp(
-      title: 'FEX',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Scaffold(
-        /*appBar: AppBar(
+        title: 'FEX',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: Scaffold(
+          /*appBar: AppBar(
           title: Text('ViewTestApp'),
         ),*/
-        body: body,
-      )
-    );
+          body: body,
+        ));
   }
 }
-

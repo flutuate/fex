@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 import 'package:fex/domain/ifile_system.dart';
 import 'package:flutter/material.dart';
 import 'package:f8n/locales.dart';
@@ -170,27 +171,29 @@ class DirectoryView3State<V extends DirectoryView3> extends StateEx<V> {
   }
 
   Widget _buildIcon(BuildContext context) {
+    var image;
     if( _fs.isDesktopDir(_dir) ) {
-      return Images.desktop;
+      image =  Images.desktop;
     }
     else if( _fs.isDocumentsDir(_dir) ) {
-      return Images.documents;
+      image =  Images.documents;
     }
     else if( _fs.isDownloadsDir(_dir) ) {
-      return Images.downloads;
+      image =  Images.downloads;
     }
     else if( _fs.isMusicDir(_dir) ) {
-      return Images.music;
+      image =  Images.music;
     }
     else if( _fs.isVideosDir(_dir) ) {
-      return Images.videos;
+      image =  Images.videos;
     }
     else if( _fs.isPicturesDir(_dir) ) {
-      return Images.pictures;
+      image =  Images.pictures;
     }
     else {
-      return Images.folder;
+      image = Images.folder;
     }
+    return image;//AspectRatio(aspectRatio: 1.25, child: image);
   }
 
   Widget _buildName(BuildContext context) {
